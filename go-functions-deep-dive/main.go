@@ -27,8 +27,8 @@ func main() {
 	fmt.Println(moreTranformedNums)
 }
 
-// Functions in GO are first class values, so we can pass them as normal values and therefore also accept them
-// as paramters inside other functions.
+// Functions in GO are first class values, so we can pass them as normal values to other functions as
+// input paramteres.
 func transformNumbers(nums *[]int, transform transformFn) []int {
 	dNums := []int{}
 
