@@ -3,20 +3,20 @@ package main
 import "fmt"
 
 // We have simply assigned a type alias to a function type.
-// TIP: Use type aliases for more longer function types
+// TIP: Use type aliases for more longer function types.
 type transformFn func(int) int
 
 func main() {
 	numbers := []int{1, 2, 3, 4}
 	moreNumers := []int{5, 1, 2}
 
-	doubled := transformNumbers(&numbers, double) // We pass the name of the function as value
+	doubled := transformNumbers(&numbers, double) // We pass the name of the function as value.
 	tripled := transformNumbers(&numbers, triple)
 
 	fmt.Println(doubled)
 	fmt.Println(tripled)
 
-	// Both transformFn1, transformFn2 stores functions as values and therefore can also be passed as values around.
+	// Both transformFn1, transformFn2 stores functions as values and therefore can also be passed as values.
 	transformerFn1 := getTransformerFn(&numbers)
 	transformerFn2 := getTransformerFn(&moreNumers)
 
