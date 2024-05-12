@@ -2,57 +2,44 @@ package main
 
 import "fmt"
 
-// We have simply assigned a type alias to a function type.
-// TIP: Use type aliases for more longer function types.
-type transformFn func(int) int
-
 func main() {
-	numbers := []int{1, 2, 3, 4}
-	moreNumers := []int{5, 1, 2}
+	numbers := []int{1, 2, 3}
 
-	doubled := transformNumbers(&numbers, double) // We pass the name of the function as value.
+	// With closures, values access from outer scope are locked in when the anonynmous function is created.
+	// When we call createTransform with 2 as an argument then 2 will be locked in and then later on when this double function is executed
+	// the number will always be multiplied with 2.
+	double := createTransformer(2)
+	triple := createTransformer(3)
+
+	// If you have a function that is only used in one palce in the app, you can use anonymous functions.
+	// Anonymous functions are created JIT.
+	transformed := transformNumbers(&numbers, func(num int) int {
+		return num * 2
+	})
+
+	doubled := transformNumbers(&numbers, double)
 	tripled := transformNumbers(&numbers, triple)
 
+	fmt.Println(transformed)
 	fmt.Println(doubled)
 	fmt.Println(tripled)
-
-	// Both transformFn1, transformFn2 stores functions as values and therefore can also be passed as values.
-	transformerFn1 := getTransformerFn(&numbers)
-	transformerFn2 := getTransformerFn(&moreNumers)
-
-	tranformedNums := transformNumbers(&numbers, transformerFn1)
-	moreTranformedNums := transformNumbers(&moreNumers, transformerFn2)
-
-	fmt.Println(tranformedNums)
-	fmt.Println(moreTranformedNums)
 }
 
-// Functions in GO are first class values, so we can pass them as normal values to other functions as
-// input paramteres.
-func transformNumbers(nums *[]int, transform transformFn) []int {
-	dNums := []int{}
+func transformNumbers(numbers *[]int, transform func(int) int) []int {
+	dNumbers := []int{}
 
-	// With slices, we have to manually dereference the pointer unlike structs where GO does it for us.
-	for _, val := range *nums {
-		dNums = append(dNums, transform(val))
+	for _, val := range *numbers {
+		dNumbers = append(dNumbers, transform(val))
 	}
 
-	return dNums
+	return dNumbers
 }
 
-// Functions can also return other functions as values.
-func getTransformerFn(nums *[]int) transformFn {
-	if (*nums)[0] == 1 {
-		return double
-	} else {
-		return triple
+// Factory function...
+// We can return anonymous functions as well since functiona themselves are returnable form other functions.
+// We are locking in the value of factor parameter since anonymous function create closures in GO.
+func createTransformer(factor int) func(int) int {
+	return func(num int) int {
+		return num * factor
 	}
-}
-
-func double(num int) int {
-	return num * 2
-}
-
-func triple(num int) int {
-	return num * 3
 }
