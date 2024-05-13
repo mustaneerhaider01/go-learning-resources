@@ -36,7 +36,7 @@ func transformNumbers(numbers *[]int, transform func(int) int) []int {
 }
 
 // Factory function...
-// We can return anonymous functions as well since functiona themselves are returnable form other functions.
+// We can return anonymous functions as well since functions themselves are returnable form other functions.
 // We are locking in the value of factor parameter since anonymous function create closures in GO.
 func createTransformer(factor int) func(int) int {
 	return func(num int) int {
