@@ -4,7 +4,7 @@
 
 2. Channel is like a data transmission device in Go which is just a normal value that can be stored in variable.
 
-3. We can define whihc kind of value can be emitted by the channel.
+3. We can define which kind of value can be emitted by the channel.
 
 4. Channels can be created with the built-in make() function.
 
@@ -12,7 +12,7 @@
    when that GO routine is completed by using "<-" operator which shows direction of data flow
    e.g doneChan <- true
 
-6. Then in the place where we start that go routine, we can read from that channel and then GO will wait untill that value is emitted from that channe; before program exits e.g <-done
+6. Then in the place where we start that go routine, we can read from that channel and then GO will wait untill that value is emitted from that channel before program exits e.g <-done
 
 7. We can pass single channel to multiple go routines and inside each go routine manually specify when it ends, then in order to avoid race condition between go routines, we need to wait/read as many values from that channel as many go routines we have.
 
