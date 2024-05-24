@@ -1,4 +1,4 @@
-### Reading content from a line by line in GO
+### Reading content from a file, line by line in GO
 
 1. The os package has a method, Open() which opens a file to be read.
 
