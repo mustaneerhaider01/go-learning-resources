@@ -1,0 +1,9 @@
+POST http://localhost:4000/events
+Content-Type: application/json
+
+{
+  "name": "Example event",
+  "description": "An example description",
+  "location": "Peshawar, Pakistan",
+  "dateTime": "2024-05-15T09:25:00.000Z"
+}
