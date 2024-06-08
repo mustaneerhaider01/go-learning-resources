@@ -19,7 +19,8 @@ func main() {
 	db.InitDB()
 	server := gin.Default()
 
-	routes.RegisterRoutes(server)
+	router := server.Group("/api")
+	routes.RegisterRoutes(router)
 
 	server.Run(":4000") // localhost:4000
 }
