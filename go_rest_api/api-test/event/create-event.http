@@ -2,8 +2,8 @@ POST http://localhost:4000/api/events
 Content-Type: application/json
 
 {
-  "name": "A second event",
-  "description": "A second special description",
+  "name": "Test event",
+  "description": "A special description",
   "location": "Peshawar, Pakistan",
   "dateTime": "2024-06-20T08:25:00.000Z"
 }

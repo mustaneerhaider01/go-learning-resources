@@ -56,6 +56,13 @@ func createEvent(ctx *gin.Context) {
 		return
 	}
 
+	err = event.Register(userId)
+
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "Could not register user for event."})
+		return
+	}
+
 	ctx.JSON(http.StatusCreated, gin.H{"message": "Event created", "event": event})
 }
 
