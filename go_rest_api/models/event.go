@@ -3,6 +3,7 @@ package models
 import (
 	"time"
 
+	"example.com/rest-api/constants"
 	"example.com/rest-api/db"
 )
 
@@ -143,4 +144,54 @@ func (e Event) CancelRegistration(userId int64) error {
 
 	_, err = stmt.Exec(e.ID, userId)
 	return err
+}
+
+func (e Event) GetRegistrations() ([]map[string]any, error) {
+	query := `
+	SELECT
+		registrations.id as id,
+    events.name AS eventName, 
+    events.location AS eventLocation, 
+    events.dateTime AS eventDateTime, 
+    users.email AS userEmail
+	FROM 
+    registrations
+	INNER JOIN events ON registrations.event_id = events.id
+	INNER JOIN users ON registrations.user_id = users.id
+	WHERE registrations.event_id = ?;
+	`
+
+	rows, err := db.DB.Query(query, e.ID)
+
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	registrations := make([]map[string]any, 0)
+
+	for rows.Next() {
+		var event Event
+		var user User
+		var registrationId int64
+
+		err = rows.Scan(&registrationId, &event.Name, &event.Location, &event.DateTime, &user.Email)
+
+		if err != nil {
+			return nil, err
+		}
+
+		registration := map[string]any{
+			"id":            registrationId,
+			"eventName":     event.Name,
+			"eventLocation": event.Location,
+			"eventDate":     event.DateTime.Format(constants.DateTime),
+			"userEmail":     user.Email,
+		}
+
+		registrations = append(registrations, registration)
+	}
+
+	return registrations, nil
 }

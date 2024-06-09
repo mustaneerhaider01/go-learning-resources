@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"log"
 	"net/http"
 	"strconv"
 
@@ -54,4 +55,30 @@ func cancelEventRegistration(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{"message": "Registration cancelled for event"})
+}
+
+func getEventRegistrations(ctx *gin.Context) {
+	eventId, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
+
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"message": "Could not parse event id."})
+		return
+	}
+
+	event, err := models.GetEventByID(eventId)
+
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "Could not fetch event."})
+		return
+	}
+
+	registrations, err := event.GetRegistrations()
+
+	if err != nil {
+		log.Println(err)
+		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "Could not fetch registrations."})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"eventRegistrations": registrations})
 }
